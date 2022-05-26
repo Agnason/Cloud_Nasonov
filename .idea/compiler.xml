@@ -6,8 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Cloud_Nasonov" />
+        <module name="cloud_server" />
         <module name="cloud_application" />
+        <module name="Storage" />
       </profile>
     </annotationProcessing>
   </component>

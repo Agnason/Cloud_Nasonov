@@ -1,18 +1,52 @@
 package com.example.cloud_application;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-public class ChatController {
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class ChatController implements Initializable {
+    private Network network;
+
     @FXML
     public TextField textField;
     @FXML
     public ListView<String> listView;
 
-    public void sendMessage(ActionEvent actionEvent) {
+    public void sendMessage(ActionEvent actionEvent) throws IOException {
         String msg = textField.getText();
+        network.writeMessage(msg);
         textField.clear();
+    }
+
+    private void readLoop() {
+        try {
+            while (true) {
+                String msg = network.readMessage();
+                Platform.runLater(() -> {
+                    listView.getItems().add(msg);
+                });
+            }
+        } catch (Exception e) {
+            System.err.println("Connection lost");
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            network = new Network(8189);
+            Thread readThread = new Thread(this::readLoop);
+            readThread.setDaemon(true);
+            readThread.start();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

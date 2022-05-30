@@ -1,8 +1,6 @@
 package com.example.cloud_application;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Network {
@@ -17,6 +15,7 @@ public class Network {
         Socket socket = new Socket("localhost", port);
         is = new DataInputStream(socket.getInputStream());
         os = new DataOutputStream(socket.getOutputStream());
+
     }
 
     public String readMessage () throws IOException {
@@ -26,4 +25,5 @@ public class Network {
         os.writeUTF(message);
         os.flush();
     }
+
 }

@@ -7,13 +7,14 @@ public class EchoServer {
 
         try (ServerSocket server = new ServerSocket(8189)) {
             System.out.println("Server started");
-            while(true) {
+            while (true) {
                 Socket socket = server.accept();
-                ChatHandler handler= new ChatHandler(socket);
+                ChatHandler handler = new ChatHandler(socket);
                 new Thread(handler).start();
             }
         }
     }
-
-
 }
+
+
+

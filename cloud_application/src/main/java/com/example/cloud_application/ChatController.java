@@ -5,32 +5,32 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 
-import java.io.IOException;
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
+
     private Network network;
-
+    //lesson01//
     @FXML
-    public TextField textField;
+    public ListView<String> clientView;
     @FXML
-    public ListView<String> listView;
+    public ListView<String> serverView;
+    //lesson01//
 
-    public void sendMessage(ActionEvent actionEvent) throws IOException {
-        String msg = textField.getText();
-        network.writeMessage(msg);
-        textField.clear();
-    }
 
     private void readLoop() {
         try {
+
             while (true) {
                 String msg = network.readMessage();
                 Platform.runLater(() -> {
-                    listView.getItems().add(msg);
+                    serverView.getItems().add(msg);
                 });
             }
         } catch (Exception e) {
@@ -40,6 +40,12 @@ public class ChatController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // lesson 01 //
+        Path path = Path.of("StorageClient/FileClient");
+        clientView.getItems().clear();
+        clientView.getItems().addAll(getFiles(path));
+        // lesson 01 //
+
         try {
             network = new Network(8189);
             Thread readThread = new Thread(this::readLoop);
@@ -48,5 +54,19 @@ public class ChatController implements Initializable {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    //lesson01//
+    public List<String> getFiles(Path dir) {
+        String[] list = new File(String.valueOf(dir)).list();
+        assert list != null;
+        return Arrays.asList(list);
+    }
+    //lesson01//
+
+    public void upload(ActionEvent actionEvent) {
+    }
+
+    public void download(ActionEvent actionEvent) {
     }
 }

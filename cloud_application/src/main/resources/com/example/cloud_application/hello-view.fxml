@@ -3,10 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="355.0"
-            prefWidth="253.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.cloud_application.ChatController">
-   <TextField onAction="#sendMessage" fx:id="textField" layoutX="14.0" layoutY="315.0" prefHeight="25.0" prefWidth="225.0"/>
-   <ListView fx:id="listView" layoutX="14.0" layoutY="14.0" prefHeight="290.0" prefWidth="225.0"/>
-</AnchorPane>
+      <!--lesson01-->
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="322.0"
+      prefWidth="491.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.cloud_application.ChatController">
+    <HBox prefHeight="324.0" prefWidth="491.0">
+        <ListView fx:id="clientView" prefHeight="273.0" prefWidth="249.0"/>
+        <ListView fx:id="serverView" prefHeight="273.0" prefWidth="256.0"/>
+    </HBox>
+    <HBox prefHeight="100.0" prefWidth="200.0">
+        <Button onAction="#upload" mnemonicParsing="false" text="To Server"/>
+        <Button onAction="#download" mnemonicParsing="false" text="From Server"/>
+    </HBox>
+</VBox>
+        <!--lesson01-->

@@ -8,8 +8,8 @@ public class EchoServer {
         try (ServerSocket server = new ServerSocket(8189)) {
             System.out.println("Server started");
             while (true) {
-                Socket socket = server.accept();
-                ChatHandler handler = new ChatHandler(socket);
+                Socket serverToClient = server.accept();
+                ChatHandler handler = new ChatHandler(serverToClient);
                 new Thread(handler).start();
             }
         }

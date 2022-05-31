@@ -8,8 +8,8 @@
       prefWidth="491.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.cloud_application.ChatController">
     <HBox prefHeight="324.0" prefWidth="491.0">
-        <ListView fx:id="clientView" prefHeight="273.0" prefWidth="249.0"/>
-        <ListView fx:id="serverView" prefHeight="273.0" prefWidth="256.0"/>
+        <ListView fx:id="clientView"  prefHeight="273.0" prefWidth="250.0"/>
+        <ListView fx:id="serverView" prefHeight="273.0" prefWidth="250.0"/>
     </HBox>
     <HBox prefHeight="100.0" prefWidth="200.0">
         <Button onAction="#upload" mnemonicParsing="false" text="To Server"/>

@@ -1,51 +1,63 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
+import constants.Command;
+
+import java.io.*;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
 public class ChatHandler implements Runnable {
-    //lesson01//
-    private String serverDir = "storageServer/filesServer";
-    //lesson01//
+
     private DataInputStream is;
     private DataOutputStream os;
 
-    public ChatHandler(Socket socket) throws IOException {
-        is = new DataInputStream(socket.getInputStream());
-        os = new DataOutputStream(socket.getOutputStream());
+    public ChatHandler(Socket serverToClient) throws IOException {
+        is = new DataInputStream(serverToClient.getInputStream());
+        os = new DataOutputStream(serverToClient.getOutputStream());
         System.out.println("Client accepted");
+        sendListOfFiles(Command.SERVER_DIR);
+    }
 
-        List<String> files = getFiles(serverDir);
+    private void sendListOfFiles(String dir) throws IOException {
+        os.writeUTF(Command.LIST);
+        List<String> files = getFiles(Command.SERVER_DIR);
+        os.writeInt(files.size());
         for (String file : files) {
             os.writeUTF(file);
         }
         os.flush();
     }
 
-    @Override
-    public void run() {
-        try {
-            while (true) {
-                String msg = is.readUTF();
-                System.out.println("received " + msg);
-                os.writeUTF(msg);
-                os.flush();
-            }
-
-        } catch (Exception e) {
-            System.err.println("Connection was broken");
-        }
-    }
-
-    //lesson01//
     private List<String> getFiles(String dir) {
         String[] list = new File(dir).list();
         assert list != null;
         return Arrays.asList(list);
     }
-    //lesson01//
+
+    @Override
+    public void run() {
+        byte[] buf = new byte[256];
+        try {
+            while (true) {
+                String command = is.readUTF();
+                System.out.println("received: " + command);
+                if (command.equals(Command.FILE)) {
+                    String fileName = is.readUTF();
+                    long len = is.readLong();
+                    File file = Path.of(Command.SERVER_DIR).resolve(fileName).toFile();
+                    try (FileOutputStream fos = new FileOutputStream(file)) {
+                        for (int i = 0; i < (len + 255) / 256; i++) {
+                            int read = is.read(buf);
+                            fos.write(buf, 0, read);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    sendListOfFiles(Command.SERVER_DIR);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Connection was broken");
+        }
+    }
 }

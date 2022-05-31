@@ -8,12 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="cloud_server" />
         <module name="storageServer" />
-        <module name="storageClient" />
+        <module name="command" />
         <module name="cloud_application" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="StorageClient" target="18" />
+      <module name="storageClient" target="18" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -12,18 +12,29 @@ public class Network {
 
     public Network(int port) throws IOException {
         this.port = port;
-        Socket socket = new Socket("localhost", port);
-        is = new DataInputStream(socket.getInputStream());
-        os = new DataOutputStream(socket.getOutputStream());
+        Socket clientToServer = new Socket("localhost", 8189);
+        is = new DataInputStream(clientToServer.getInputStream());
+        os = new DataOutputStream(clientToServer.getOutputStream());
 
     }
 
-    public String readMessage () throws IOException {
+    public String readString() throws IOException {
         return is.readUTF();
+    }
+
+    public int readInt () throws IOException {
+        return is.readInt();
     }
     public void writeMessage (String message) throws IOException {
         os.writeUTF(message);
         os.flush();
     }
 
+    public DataInputStream getIs() {
+        return is;
+    }
+
+    public DataOutputStream getOs() {
+        return os;
+    }
 }
